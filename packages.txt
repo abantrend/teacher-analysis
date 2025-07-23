@@ -1,2 +1,6 @@
 fonts-dejavu-core
 fontconfig
+fonts-liberation
+fonts-noto-cjk
+fonts-noto-core
+locales-all
