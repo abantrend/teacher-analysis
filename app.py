@@ -1,3 +1,14 @@
+import locale
+import os
+
+# ضبط الترميز للعربية
+os.environ['LANG'] = 'en_US.UTF-8'
+os.environ['LC_ALL'] = 'en_US.UTF-8'
+
+try:
+    locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+except:
+    pass
 import streamlit as st
 import pandas as pd
 import numpy as np
