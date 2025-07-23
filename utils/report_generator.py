@@ -19,8 +19,6 @@ from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.enums import TA_CENTER, TA_RIGHT, TA_LEFT
-from arabic_reshaper import reshape
-from bidi.algorithm import get_display
 
 class ReportGenerator:
     """مولد التقارير الشاملة"""
@@ -33,15 +31,8 @@ class ReportGenerator:
     
     def _format_arabic_text(self, text: str) -> str:
         """تنسيق النص العربي للعرض الصحيح في PDF"""
-        try:
-            # إعادة تشكيل النص العربي
-            reshaped_text = reshape(text)
-            # تطبيق خوارزمية البيدي (البيدي) للعرض الصحيح
-            bidi_text = get_display(reshaped_text)
-            return bidi_text
-        except:
-            # في حالة الفشل، إرجاع النص الأصلي
-            return text
+        # إرجاع النص كما هو - Streamlit Cloud يدعم UTF-8 افتراضياً
+        return text
         
     def generate_comprehensive_report(self, df: pd.DataFrame, stats: Dict, grade_ranges: pd.DataFrame) -> str:
         """
@@ -134,18 +125,18 @@ class ReportGenerator:
             leftIndent=0
         )
         
-        # العنوان الرئيسي بالعربية
-        title = Paragraph(self._format_arabic_text("تقرير تحليل درجات الطلاب الشامل"), arabic_title_style)
+        # العنوان الرئيسي
+        title = Paragraph("Student Grade Analysis Report / تقرير تحليل درجات الطلاب", arabic_title_style)
         story.append(title)
         
         # معلومات التقرير
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        date_info = Paragraph(self._format_arabic_text(f"تاريخ إنتاج التقرير: {current_time}"), arabic_normal_style)
+        date_info = Paragraph(f"Report Date / تاريخ التقرير: {current_time}", arabic_normal_style)
         story.append(date_info)
         story.append(Spacer(1, 20))
         
         # الإحصائيات الأساسية
-        story.append(Paragraph(self._format_arabic_text("الإحصائيات الأساسية"), arabic_heading_style))
+        story.append(Paragraph("Basic Statistics / الإحصائيات الأساسية", arabic_heading_style))
         
         stats_data = [
             [self._format_arabic_text('المقياس'), self._format_arabic_text('القيمة')],
